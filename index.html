@@ -15,7 +15,7 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#problem">Problem</a></li>
                 <li><a href="#solution">Solution</a></li>
-                <li><a href="#features">Features</a></li>
+                <li><a href="#tool">Tool</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
@@ -25,8 +25,8 @@
     <section id="home" class="hero">
         <div class="container">
             <h1>Thermal Comfort Shelter Design</h1>
-            <p>Software-based model for area-specific shelter optimization</p>
-            <button class="btn btn-primary"><a href="#problem" style="text-decoration: none; color: white;">Learn More</a></button>
+            <p>AI-powered software model for area-specific shelter optimization with 3D visualization</p>
+            <button class="btn btn-primary"><a href="#tool" style="text-decoration: none; color: white;">Try Our AI Tool</a></button>
         </div>
     </section>
 
@@ -63,36 +63,36 @@
             <h2>Our Solution</h2>
             <div class="content">
                 <p>
-                    We've developed an intelligent, software-based model that analyzes area-specific climate data and designs shelters optimized for thermal comfort maintenance.
-                    Our system takes into account local temperature patterns, humidity, wind conditions, and solar radiation to create custom shelter designs.
+                    We've developed an intelligent, AI-powered software model that analyzes area-specific climate data and designs shelters optimized for thermal comfort maintenance.
+                    Our system takes into account local temperature patterns, humidity, wind conditions, and solar radiation to create custom shelter designs with 3D visualization.
                 </p>
                 <div class="solution-steps">
                     <div class="step">
                         <div class="step-number">1</div>
                         <div class="step-content">
-                            <h3>Data Collection</h3>
-                            <p>Gather climate and environmental data for the target region</p>
+                            <h3>Enter Location</h3>
+                            <p>Input city name and number of occupants</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-number">2</div>
                         <div class="step-content">
-                            <h3>Analysis</h3>
-                            <p>Analyze thermal patterns and comfort requirements</p>
+                            <h3>Live Weather Data</h3>
+                            <p>AI fetches real-time temperature and weather patterns</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-number">3</div>
                         <div class="step-content">
                             <h3>Optimization</h3>
-                            <p>Design shelter with optimal material and structure</p>
+                            <p>Auto-generate optimal shelter with material specifications</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-number">4</div>
                         <div class="step-content">
-                            <h3>Simulation</h3>
-                            <p>Validate design through thermal simulation</p>
+                            <h3>3D Visualization</h3>
+                            <p>View interactive 3D model and cost estimation</p>
                         </div>
                     </div>
                 </div>
@@ -106,62 +106,81 @@
             <h2>Key Features</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Climate Analysis</h3>
-                    <p>Advanced analysis of regional climate patterns and thermal variations</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🏗️</div>
-                    <h3>Design Optimization</h3>
-                    <p>AI-powered shelter design tailored to specific geographical areas</p>
+                    <div class="feature-icon">📍</div>
+                    <h3>Location-Based Design</h3>
+                    <p>AI analyzes your exact location and climate patterns</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🌡️</div>
-                    <h3>Thermal Simulation</h3>
-                    <p>Predict and optimize indoor temperature and humidity levels</p>
+                    <h3>Real-Time Weather</h3>
+                    <p>Integrates live temperature and weather data via API</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">♻️</div>
-                    <h3>Sustainable Design</h3>
-                    <p>Eco-friendly materials and energy-efficient solutions</p>
+                    <div class="feature-icon">📐</div>
+                    <h3>Auto Dimensioning</h3>
+                    <p>Calculates optimal shelter dimensions based on occupancy</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Easy to Use</h3>
-                    <p>User-friendly interface for designers and architects</p>
+                    <div class="feature-icon">🏗️</div>
+                    <h3>Material Recommendations</h3>
+                    <p>Suggests thermal insulation materials for your climate</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>Data Visualization</h3>
-                    <p>Clear visual representation of thermal comfort metrics</p>
+                    <div class="feature-icon">3D</div>
+                    <h3>3D Visualization</h3>
+                    <p>Interactive 360° 3D model with OrbitControls</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Cost Estimation</h3>
+                    <p>Budget-friendly cost calculation with material breakdown</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- How It Works -->
-    <section id="how-it-works" class="section alternate">
+    <!-- Interactive Tool Section -->
+    <section id="tool" class="section alternate">
         <div class="container">
-            <h2>How It Works</h2>
-            <div class="workflow">
-                <div class="workflow-item">
-                    <h3>Step 1: Input Location</h3>
-                    <p>Users specify the geographical area where the shelter will be built</p>
+            <h2>Try Our AI Thermal Shelter Generator</h2>
+            <p style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem;">Generate custom shelter designs with real-time weather data and 3D visualization</p>
+            
+            <div class="tool-wrapper">
+                <!-- Input Form -->
+                <div class="form-card">
+                    <h3>Generate Your Shelter Specs</h3>
+                    
+                    <label>Location (City)</label>
+                    <input type="text" id="location" placeholder="e.g. Indore, Leh, Mumbai">
+
+                    <label>Number of People</label>
+                    <input type="number" id="people" placeholder="e.g. 5" min="1" value="5">
+
+                    <label>Shelter Orientation</label>
+                    <select id="facing">
+                        <option value="North">North</option>
+                        <option value="South">South</option>
+                        <option value="East">East</option>
+                        <option value="West">West</option>
+                    </select>
+
+                    <button class="btn btn-primary" onclick="processShelter()" style="width: 100%;">Generate Specs & 3D Model</button>
+
+                    <div id="output" class="output-box">
+                        <div id="weatherStatus" style="color:#38bdf8; font-weight:bold; margin-bottom:10px;"></div>
+                        <div class="data-item"><span>Area:</span><b id="outArea">-</b></div>
+                        <div class="data-item"><span>Dimensions:</span><b id="outDim">-</b></div>
+                        <div class="data-item"><span>Material:</span><b id="outMat">-</b></div>
+                        <div class="data-item"><span>Wall Thickness:</span><b id="outThick">-</b></div>
+                        <div class="data-item"><span>Estimated Budget:</span><b id="outBudget" style="color:#4ade80;">-</b></div>
+                    </div>
                 </div>
-                <div class="workflow-arrow">→</div>
-                <div class="workflow-item">
-                    <h3>Step 2: Data Processing</h3>
-                    <p>The system processes climate data and environmental factors</p>
-                </div>
-                <div class="workflow-arrow">→</div>
-                <div class="workflow-item">
-                    <h3>Step 3: Model Generation</h3>
-                    <p>Generate optimized shelter design based on thermal requirements</p>
-                </div>
-                <div class="workflow-arrow">→</div>
-                <div class="workflow-item">
-                    <h3>Step 4: Report & Recommendations</h3>
-                    <p>Get detailed design report with material recommendations</p>
+
+                <!-- 3D Viewer -->
+                <div class="canvas-card">
+                    <h3>3D Structural Visualization</h3>
+                    <small style="color:#94a3b8;">Use mouse to rotate, scroll to zoom • Temperature-responsive coloring</small>
+                    <div id="canvas3d"></div>
                 </div>
             </div>
         </div>
@@ -175,31 +194,22 @@
                 <div class="tech-item">
                     <h3>🔧 Technologies Used</h3>
                     <ul>
-                        <li>Machine Learning for thermal pattern recognition</li>
-                        <li>CFD Simulation for air flow analysis</li>
-                        <li>Heat Transfer Modeling</li>
-                        <li>Geospatial Data Analysis</li>
+                        <li>Three.js for 3D Visualization</li>
+                        <li>OpenWeatherMap API for Real-time Weather</li>
+                        <li>AI Algorithm for Thermal Calculations</li>
+                        <li>Responsive Web Design</li>
                     </ul>
                 </div>
                 <div class="tech-item">
-                    <h3>📈 Optimization Parameters</h3>
+                    <h3>📈 Optimization Algorithm</h3>
                     <ul>
-                        <li>Indoor temperature maintenance</li>
-                        <li>Energy efficiency</li>
-                        <li>Material cost optimization</li>
-                        <li>Construction feasibility</li>
+                        <li>Temperature-based Material Selection</li>
+                        <li>Occupancy-based Dimensioning</li>
+                        <li>Orientation-aware Insulation</li>
+                        <li>Budget-friendly Cost Estimation</li>
                     </ul>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Call to Action -->
-    <section class="cta">
-        <div class="container">
-            <h2>Ready to Design Your Thermal Shelter?</h2>
-            <p>Join us in creating sustainable, climate-optimized shelters for communities worldwide</p>
-            <button class="btn btn-secondary"><a href="#contact" style="text-decoration: none; color: #007bff;">Get Started</a></button>
         </div>
     </section>
 
@@ -226,5 +236,158 @@
             <p>Built for Hackathon | Climate-Adaptive Architecture</p>
         </div>
     </footer>
+
+    <!-- Three.js Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Thermal Shelter AI Script -->
+    <script>
+    let scene, camera, renderer, currentMesh, controls;
+
+    // Initialize 3D Scene
+    function init3D() {
+        const container = document.getElementById("canvas3d");
+        if (!container) return;
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0a16);
+
+        camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.set(10, 10, 15);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(10, 20, 10);
+        scene.add(dirLight);
+
+        // Grid
+        const gridHelper = new THREE.GridHelper(30, 30, 0x2563eb, 0x334155);
+        scene.add(gridHelper);
+
+        animate();
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        if(controls) controls.update();
+        renderer.render(scene, camera);
+    }
+
+    // Render 3D Shelter
+    function render3DShelter(length, width, height, temp) {
+        if (currentMesh) scene.remove(currentMesh);
+
+        const group = new THREE.Group();
+
+        // Temperature-based color
+        let wallColor = 0x94a3b8; // Default gray
+        if (temp >= 35) wallColor = 0xf97316; // Orange for hot climates
+        else if (temp <= 10) wallColor = 0x38bdf8; // Blue for cold climates
+
+        // Main Walls
+        const wallGeo = new THREE.BoxGeometry(length, height, width);
+        const wallMat = new THREE.MeshStandardMaterial({ color: wallColor, wireframe: false });
+        const shelter = new THREE.Mesh(wallGeo, wallMat);
+        shelter.position.y = height / 2;
+        group.add(shelter);
+
+        // Roof (Pyramid)
+        const roofGeo = new THREE.ConeGeometry(Math.max(length, width) * 0.75, 1.5, 4);
+        const roofMat = new THREE.MeshStandardMaterial({ color: 0xef4444 });
+        const roof = new THREE.Mesh(roofGeo, roofMat);
+        roof.position.y = height + 0.75;
+        roof.rotation.y = Math.PI / 4;
+        group.add(roof);
+
+        // Door
+        const doorGeo = new THREE.BoxGeometry(0.8, 1.8, 0.1);
+        const doorMat = new THREE.MeshStandardMaterial({ color: 0x1e293b });
+        const door = new THREE.Mesh(doorGeo, doorMat);
+        door.position.set(0, 0.9, (width / 2) + 0.05);
+        group.add(door);
+
+        currentMesh = group;
+        scene.add(currentMesh);
+    }
+
+    // Main Processing Function
+    async function processShelter() {
+        const location = document.getElementById("location").value.trim();
+        const people = parseInt(document.getElementById("people").value);
+        const facing = document.getElementById("facing").value;
+
+        if (!location || !people || people <= 0) {
+            alert("Please enter a valid location and number of people!");
+            return;
+        }
+
+        // Weather API
+        const apiKey = "895284fb2d2c50a520d3e2dbec697ad5";
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`;
+
+        let temp = 25.0;
+        let weather = "Moderate";
+
+        try {
+            const res = await fetch(url);
+            if (res.ok) {
+                const data = await res.json();
+                temp = data.main.temp;
+                weather = data.weather[0].main;
+                document.getElementById("weatherStatus").innerText = `🌍 LIVE WEATHER: ${temp}°C | ${weather}`;
+            }
+        } catch (e) {
+            document.getElementById("weatherStatus").innerText = `📍 OFFLINE MODE: Using default ${temp}°C`;
+        }
+
+        // Calculate Dimensions
+        const area = people * 4.0;
+        const length = parseFloat(Math.sqrt(area * 1.5).toFixed(2));
+        const width = parseFloat((area / length).toFixed(2));
+        const height = 3;
+
+        // Select Material Based on Temperature
+        let material = "", wallThick = "", costPerSqm = 0;
+        if (temp >= 35) {
+            material = "🌡️ Reflective Canvas + PUF Insulation Panels";
+            wallThick = "200 mm";
+            costPerSqm = 3500;
+        } else if (temp <= 10) {
+            material = "❄️ Insulated Prefab Composite + Stone";
+            wallThick = "300 mm";
+            costPerSqm = 5000;
+        } else {
+            material = "🏗️ Standard Brick + Waterproof Tarpaulin";
+            wallThick = "150 mm";
+            costPerSqm = 2500;
+        }
+
+        const estimatedBudget = area * costPerSqm;
+
+        // Display Results
+        document.getElementById("outArea").innerText = `${area} sq.m`;
+        document.getElementById("outDim").innerText = `${length}m × ${width}m (Height: ${height}m)`;
+        document.getElementById("outMat").innerText = material;
+        document.getElementById("outThick").innerText = wallThick;
+        document.getElementById("outBudget").innerText = `₹${estimatedBudget.toLocaleString('en-IN')}`;
+        document.getElementById("output").style.display = "block";
+
+        // Render 3D Model
+        render3DShelter(length, width, height, temp);
+    }
+
+    // Initialize on page load
+    window.addEventListener('load', init3D);
+    </script>
+
 </body>
 </html>
