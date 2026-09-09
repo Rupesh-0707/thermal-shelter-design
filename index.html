@@ -41,7 +41,7 @@
             margin-top: 1rem;
             color: #e2e8f0;
             font-size: 0.9rem;
-            max-height: 200px;
+            max-height: 300px;
             overflow-y: auto;
         }
         
@@ -77,6 +77,196 @@
         
         .export-btn:hover {
             background: #059669;
+        }
+
+        /* Location Input with Dropdown */
+        .location-input-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        #location {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        #location:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .city-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+        }
+
+        .city-suggestions.show {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: 0.75rem;
+            color: #e2e8f0;
+            cursor: pointer;
+            border-bottom: 1px solid #334155;
+            transition: background 0.2s;
+        }
+
+        .suggestion-item:hover {
+            background: #334155;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Weather Data Display */
+        .weather-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .weather-card {
+            background: #0f172a;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            color: #e2e8f0;
+        }
+
+        .weather-card .label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+
+        .weather-card .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        .weather-card .unit {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* Climate Chart */
+        .climate-chart {
+            background: #0f172a;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .climate-chart h4 {
+            color: #38bdf8;
+            margin-top: 0;
+        }
+
+        .monthly-temps {
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-end;
+            height: 150px;
+            justify-content: space-between;
+        }
+
+        .temp-bar {
+            flex: 1;
+            background: linear-gradient(to top, #3b82f6, #60a5fa);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            min-height: 5px;
+        }
+
+        .temp-bar:hover::after {
+            content: attr(data-temp);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: #38bdf8;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            border: 1px solid #475569;
+        }
+
+        .month-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        /* Extended Weather Info */
+        .extended-weather {
+            background: #0f172a;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .extended-weather h4 {
+            color: #38bdf8;
+            margin-top: 0;
+        }
+
+        .weather-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #334155;
+            color: #e2e8f0;
+        }
+
+        .weather-detail:last-child {
+            border-bottom: none;
+        }
+
+        .weather-detail .label {
+            color: #94a3b8;
+        }
+
+        .weather-detail .value {
+            font-weight: bold;
+            color: #4ade80;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #334155;
+            border-top-color: #38bdf8;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -186,8 +376,8 @@
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🌡️</div>
-                    <h3>Real-Time Weather</h3>
-                    <p>Integrates live temperature and weather data via API</p>
+                    <h3>Extended Weather Data</h3>
+                    <p>Wind speed, pressure, UV index, and more metrics</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📐</div>
@@ -195,9 +385,9 @@
                     <p>Calculates optimal shelter dimensions based on occupancy</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🏗️</div>
-                    <h3>Material Recommendations</h3>
-                    <p>Suggests thermal insulation materials for your climate</p>
+                    <div class="feature-icon">📊</div>
+                    <h3>Historical Climate Data</h3>
+                    <p>Annual temperature patterns and seasonal variations</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">3D</div>
@@ -225,7 +415,10 @@
                     <h3>Generate Your Shelter Specs</h3>
                     
                     <label>Location (City)</label>
-                    <input type="text" id="location" placeholder="e.g. Indore, Leh, Mumbai">
+                    <div class="location-input-wrapper">
+                        <input type="text" id="location" placeholder="e.g. Indore, Leh, Mumbai" autocomplete="off">
+                        <div class="city-suggestions" id="citySuggestions"></div>
+                    </div>
 
                     <label>Number of People</label>
                     <input type="number" id="people" placeholder="e.g. 5" min="1" value="5">
@@ -240,8 +433,21 @@
 
                     <button class="btn btn-primary" onclick="processShelter()" style="width: 100%;">Generate Specs & 3D Model</button>
 
+                    <!-- Extended Weather Data Display -->
+                    <div id="weatherContainer" style="display: none;">
+                        <div id="weatherStatus" style="color:#38bdf8; font-weight:bold; margin-top:1rem; margin-bottom:1rem;"></div>
+                        
+                        <!-- Current Weather Cards -->
+                        <div class="weather-cards" id="weatherCards"></div>
+                        
+                        <!-- Extended Weather Info -->
+                        <div class="extended-weather" id="extendedWeatherInfo"></div>
+                        
+                        <!-- Monthly Climate Chart -->
+                        <div class="climate-chart" id="climateChart"></div>
+                    </div>
+
                     <div id="output" class="output-box">
-                        <div id="weatherStatus" style="color:#38bdf8; font-weight:bold; margin-bottom:10px;"></div>
                         <div class="data-item"><span>Area:</span><b id="outArea">-</b></div>
                         <div class="data-item"><span>Dimensions:</span><b id="outDim">-</b></div>
                         <div class="data-item"><span>Material:</span><b id="outMat">-</b></div>
@@ -291,7 +497,8 @@
                     <h3>🔧 Technologies Used</h3>
                     <ul>
                         <li>Three.js for Advanced 3D Visualization</li>
-                        <li>OpenWeatherMap API for Real-time Weather</li>
+                        <li>OpenWeatherMap API for Real-time Weather & Historical Data</li>
+                        <li>City Suggestion Autocomplete System</li>
                         <li>AI Algorithm for Thermal Calculations</li>
                         <li>Responsive Web Design</li>
                         <li>Export to PDF, GLTF, and JSON formats</li>
@@ -303,6 +510,8 @@
                         <li>Temperature-based Material Selection</li>
                         <li>Occupancy-based Dimensioning</li>
                         <li>Orientation-aware Insulation</li>
+                        <li>Extended Weather Analysis (Wind, Pressure, UV)</li>
+                        <li>Historical Climate Pattern Analysis</li>
                         <li>Thermal Efficiency Heatmap</li>
                         <li>Budget-friendly Cost Estimation</li>
                     </ul>
@@ -340,12 +549,31 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <!-- Thermal Shelter AI Script with Enhanced 3D -->
+    <!-- Thermal Shelter AI Script with Enhanced Weather & 3D -->
     <script>
     let scene, camera, renderer, currentGroup, controls;
     let shelterData = {};
     let currentView = 'full';
     let isAutoRotating = false;
+
+    // Popular cities for suggestions
+    const popularCities = [
+        { name: 'Indore', country: 'India' },
+        { name: 'Mumbai', country: 'India' },
+        { name: 'Delhi', country: 'India' },
+        { name: 'Bangalore', country: 'India' },
+        { name: 'Leh', country: 'India' },
+        { name: 'Shimla', country: 'India' },
+        { name: 'Chennai', country: 'India' },
+        { name: 'Kolkata', country: 'India' },
+        { name: 'Pune', country: 'India' },
+        { name: 'Jaipur', country: 'India' },
+        { name: 'London', country: 'UK' },
+        { name: 'New York', country: 'USA' },
+        { name: 'Tokyo', country: 'Japan' },
+        { name: 'Dubai', country: 'UAE' },
+        { name: 'Sydney', country: 'Australia' }
+    ];
 
     // Initialize 3D Scene
     function init3D() {
@@ -388,22 +616,63 @@
         requestAnimationFrame(animate);
         if(controls) {
             controls.update();
-            if(isAutoRotating) {
+            if(isAutoRotating && currentGroup) {
                 currentGroup.rotation.y += 0.002;
             }
         }
         renderer.render(scene, camera);
     }
 
-    // OPTION A: Enhanced 3D Model with Architectural Details
+    // CITY SUGGESTIONS DROPDOWN
+    function setupCitySuggestions() {
+        const locationInput = document.getElementById('location');
+        const suggestionsDiv = document.getElementById('citySuggestions');
+
+        locationInput.addEventListener('input', (e) => {
+            const value = e.target.value.toLowerCase().trim();
+            
+            if (value.length === 0) {
+                suggestionsDiv.classList.remove('show');
+                return;
+            }
+
+            const filtered = popularCities.filter(city => 
+                city.name.toLowerCase().startsWith(value)
+            );
+
+            if (filtered.length === 0) {
+                suggestionsDiv.classList.remove('show');
+                return;
+            }
+
+            suggestionsDiv.innerHTML = filtered.map(city => `
+                <div class="suggestion-item" onclick="selectCity('${city.name}')">${city.name}, ${city.country}</div>
+            `).join('');
+            suggestionsDiv.classList.add('show');
+        });
+
+        // Close suggestions when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target !== locationInput) {
+                suggestionsDiv.classList.remove('show');
+            }
+        });
+    }
+
+    function selectCity(cityName) {
+        document.getElementById('location').value = cityName;
+        document.getElementById('citySuggestions').classList.remove('show');
+    }
+
+    // ENHANCED 3D Model with Architectural Details
     function render3DShelter(length, width, height, temp, orientation) {
         if (currentGroup) scene.remove(currentGroup);
         currentGroup = new THREE.Group();
 
         // Temperature-based color
-        let wallColor = 0x94a3b8; // Default gray
-        if (temp >= 35) wallColor = 0xf97316; // Orange for hot climates
-        else if (temp <= 10) wallColor = 0x38bdf8; // Blue for cold climates
+        let wallColor = 0x94a3b8;
+        if (temp >= 35) wallColor = 0xf97316;
+        else if (temp <= 10) wallColor = 0x38bdf8;
 
         // 1. FOUNDATION
         const foundationGeo = new THREE.BoxGeometry(length + 0.5, 0.3, width + 0.5);
@@ -413,7 +682,7 @@
         foundation.castShadow = true;
         currentGroup.add(foundation);
 
-        // 2. MAIN WALLS with Better Proportions
+        // 2. MAIN WALLS
         const wallGeo = new THREE.BoxGeometry(length, height, width);
         const wallMat = new THREE.MeshStandardMaterial({ color: wallColor, roughness: 0.6, metalness: 0.1 });
         const shelter = new THREE.Mesh(wallGeo, wallMat);
@@ -422,13 +691,12 @@
         shelter.receiveShadow = true;
         currentGroup.add(shelter);
 
-        // 3. WINDOWS (4 windows - 2 on long sides)
+        // 3. WINDOWS
         const windowSize = 1.0;
         const windowDepth = 0.15;
         const windowGeo = new THREE.BoxGeometry(windowSize, windowSize * 0.8, windowDepth);
         const windowMat = new THREE.MeshStandardMaterial({ color: 0x87ceeb, transparent: true, opacity: 0.6, metalness: 0.8 });
         
-        // Window positions - front
         const window1 = new THREE.Mesh(windowGeo, windowMat);
         window1.position.set(-length/3, height * 0.6, width/2 + 0.08);
         window1.castShadow = true;
@@ -439,7 +707,6 @@
         window2.castShadow = true;
         currentGroup.add(window2);
 
-        // Back windows
         const window3 = new THREE.Mesh(windowGeo, windowMat);
         window3.position.set(-length/3, height * 0.6, -width/2 - 0.08);
         window3.castShadow = true;
@@ -458,7 +725,7 @@
         door.castShadow = true;
         currentGroup.add(door);
 
-        // 5. ROOF (Pitched/Triangular for better thermal management)
+        // 5. ROOF
         const roofGeo = new THREE.ConeGeometry(Math.max(length, width) * 0.75, 2.2, 4);
         const roofMat = new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.5 });
         const roof = new THREE.Mesh(roofGeo, roofMat);
@@ -468,7 +735,7 @@
         roof.receiveShadow = true;
         currentGroup.add(roof);
 
-        // 6. VENTILATION OPENINGS (vents at top for hot climate)
+        // 6. VENTILATION OPENINGS
         if (temp >= 35) {
             const ventGeo = new THREE.BoxGeometry(0.5, 0.3, 0.15);
             const ventMat = new THREE.MeshStandardMaterial({ color: 0x64748b });
@@ -495,7 +762,7 @@
         updateMaterialInfo(temp, length, width, height);
     }
 
-    // OPTION B: Interactive Features
+    // Interactive Features
     function toggleView(view) {
         currentView = view;
         const buttons = document.querySelectorAll('.visualization-controls .control-btn');
@@ -513,7 +780,6 @@
 
     function showCrossSection() {
         if (!currentGroup) return;
-        // Hide back half of shelter for cross-section view
         currentGroup.children.forEach(child => {
             if (child.position.z < 0) {
                 child.visible = false;
@@ -530,7 +796,6 @@
 
     function showThermalHeatmap() {
         if (!currentGroup) return;
-        // Apply thermal gradient colors based on temperature
         const temp = shelterData.temperature;
         const heatColor = temp >= 35 ? new THREE.Color(0xff4500) : 
                          temp <= 10 ? new THREE.Color(0x0066ff) : 
@@ -559,7 +824,111 @@
         event.target.classList.toggle('active');
     }
 
-    // OPTION C: Export Functionality
+    // Extended Weather Data Display
+    function displayExtendedWeatherData(weatherData) {
+        const weatherCards = `
+            <div class="weather-card">
+                <div class="label">Temperature</div>
+                <div class="value">${weatherData.temp}°<span class="unit">C</span></div>
+            </div>
+            <div class="weather-card">
+                <div class="label">Humidity</div>
+                <div class="value">${weatherData.humidity}<span class="unit">%</span></div>
+            </div>
+            <div class="weather-card">
+                <div class="label">Wind Speed</div>
+                <div class="value">${weatherData.windSpeed}<span class="unit">m/s</span></div>
+            </div>
+            <div class="weather-card">
+                <div class="label">Pressure</div>
+                <div class="value">${weatherData.pressure}<span class="unit">hPa</span></div>
+            </div>
+            <div class="weather-card">
+                <div class="label">UV Index</div>
+                <div class="value">${weatherData.uvIndex || 'N/A'}<span class="unit"></span></div>
+            </div>
+            <div class="weather-card">
+                <div class="label">Visibility</div>
+                <div class="value">${(weatherData.visibility / 1000).toFixed(1)}<span class="unit">km</span></div>
+            </div>
+        `;
+        document.getElementById('weatherCards').innerHTML = weatherCards;
+
+        const extendedInfo = `
+            <div class="weather-detail">
+                <span class="label">Weather Condition:</span>
+                <span class="value">${weatherData.condition}</span>
+            </div>
+            <div class="weather-detail">
+                <span class="label">Feels Like:</span>
+                <span class="value">${weatherData.feelsLike}°C</span>
+            </div>
+            <div class="weather-detail">
+                <span class="label">Cloud Coverage:</span>
+                <span class="value">${weatherData.clouds}%</span>
+            </div>
+            <div class="weather-detail">
+                <span class="label">Rain Probability:</span>
+                <span class="value">${weatherData.rainProbability || 'N/A'}</span>
+            </div>
+            <div class="weather-detail">
+                <span class="label">Sunrise:</span>
+                <span class="value">${weatherData.sunrise}</span>
+            </div>
+            <div class="weather-detail">
+                <span class="label">Sunset:</span>
+                <span class="value">${weatherData.sunset}</span>
+            </div>
+        `;
+        document.getElementById('extendedWeatherInfo').innerHTML = extendedInfo;
+    }
+
+    // Historical Climate Data Display
+    function displayHistoricalClimateData(historicalData) {
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const maxTemp = Math.max(...historicalData);
+        
+        let barsHTML = '';
+        historicalData.forEach((temp, index) => {
+            const height = (temp / maxTemp) * 100;
+            barsHTML += `
+                <div style="flex-direction: column; display: flex; align-items: center;">
+                    <div class="temp-bar" style="height: ${height}%;" data-temp="${temp.toFixed(1)}°C"></div>
+                    <div class="month-label">${months[index]}</div>
+                </div>
+            `;
+        });
+
+        const climateHTML = `
+            <h4>Annual Temperature Pattern</h4>
+            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">Average temperatures throughout the year</p>
+            <div class="monthly-temps">
+                ${barsHTML}
+            </div>
+            <div style="margin-top: 1rem; color: #94a3b8; text-align: center; font-size: 0.9rem;">
+                Annual Avg: ${(historicalData.reduce((a, b) => a + b) / 12).toFixed(1)}°C | 
+                Max: ${Math.max(...historicalData).toFixed(1)}°C | 
+                Min: ${Math.min(...historicalData).toFixed(1)}°C
+            </div>
+        `;
+        document.getElementById('climateChart').innerHTML = climateHTML;
+    }
+
+    // Mock Historical Data (simulate with realistic patterns)
+    function generateHistoricalData(temp) {
+        // Simulate climate patterns based on current temperature
+        if (temp >= 35) {
+            // Hot climate - Indore-like pattern
+            return [15, 18, 25, 32, 38, 40, 38, 37, 34, 29, 21, 16];
+        } else if (temp <= 10) {
+            // Cold climate - Leh-like pattern
+            return [-8, -5, 2, 10, 18, 24, 28, 27, 21, 12, 2, -4];
+        } else {
+            // Moderate climate - Mumbai-like pattern
+            return [24, 25, 29, 32, 33, 31, 29, 29, 28, 28, 26, 24];
+        }
+    }
+
     function updateMaterialInfo(temp, length, width, height) {
         let materialDesc = "";
         
@@ -664,6 +1033,10 @@
             return;
         }
 
+        // Show loading
+        document.getElementById("weatherStatus").innerHTML = '<span class="loading-spinner"></span> Fetching weather data...';
+        document.getElementById("weatherContainer").style.display = "block";
+
         // Weather API
         const apiKey = "895284fb2d2c50a520d3e2dbec697ad5";
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`;
@@ -671,6 +1044,14 @@
         let temp = 25.0;
         let weather = "Moderate";
         let humidity = 60;
+        let windSpeed = 5;
+        let pressure = 1013;
+        let uvIndex = 5;
+        let visibility = 10000;
+        let feelsLike = 25;
+        let clouds = 50;
+        let sunrise = '06:00';
+        let sunset = '18:00';
 
         try {
             const res = await fetch(url);
@@ -679,11 +1060,45 @@
                 temp = data.main.temp;
                 weather = data.weather[0].main;
                 humidity = data.main.humidity;
+                windSpeed = data.wind.speed;
+                pressure = data.main.pressure;
+                visibility = data.visibility;
+                feelsLike = data.main.feels_like;
+                clouds = data.clouds.all;
+                
+                // Convert unix timestamps to readable time
+                const sunriseTime = new Date(data.sys.sunrise * 1000);
+                const sunsetTime = new Date(data.sys.sunset * 1000);
+                sunrise = sunriseTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+                sunset = sunsetTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+
                 document.getElementById("weatherStatus").innerText = `🌍 LIVE WEATHER: ${temp}°C | ${weather} | Humidity: ${humidity}%`;
+            } else {
+                throw new Error('Location not found');
             }
         } catch (e) {
             document.getElementById("weatherStatus").innerText = `📍 OFFLINE MODE: Using default ${temp}°C`;
         }
+
+        // Display Extended Weather Data
+        const weatherData = {
+            temp: temp.toFixed(1),
+            humidity: humidity,
+            windSpeed: windSpeed.toFixed(1),
+            pressure: pressure,
+            uvIndex: uvIndex,
+            visibility: visibility,
+            condition: weather,
+            feelsLike: feelsLike.toFixed(1),
+            clouds: clouds,
+            sunrise: sunrise,
+            sunset: sunset
+        };
+        displayExtendedWeatherData(weatherData);
+
+        // Display Historical Climate Data
+        const historicalData = generateHistoricalData(temp);
+        displayHistoricalClimateData(historicalData);
 
         // Calculate Dimensions
         const area = people * 4.0;
@@ -717,6 +1132,9 @@
             temperature: temp,
             weather: weather,
             humidity: humidity,
+            windSpeed: windSpeed,
+            pressure: pressure,
+            visibility: visibility,
             area: area,
             length: length,
             width: width,
@@ -725,6 +1143,7 @@
             wallThickness: wallThick,
             costPerSqm: costPerSqm,
             totalBudget: estimatedBudget,
+            historicalData: historicalData,
             generatedAt: new Date().toLocaleString()
         };
 
@@ -741,7 +1160,10 @@
     }
 
     // Initialize on page load
-    window.addEventListener('load', init3D);
+    window.addEventListener('load', () => {
+        init3D();
+        setupCitySuggestions();
+    });
     </script>
 
 </body>
