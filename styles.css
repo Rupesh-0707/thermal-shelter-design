@@ -251,6 +251,107 @@ body {
     color: #555;
 }
 
+/* Tool Wrapper & 3D Visualization */
+.tool-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.form-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.form-card h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+}
+
+.form-card label {
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.form-card input,
+.form-card select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    font-family: inherit;
+}
+
+.form-card input:focus,
+.form-card select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+.output-box {
+    background: #f0f9ff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+    margin-top: 1.5rem;
+    display: none;
+}
+
+.data-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e0e7ff;
+}
+
+.data-item:last-child {
+    border-bottom: none;
+}
+
+.data-item span {
+    color: #555;
+    font-weight: 500;
+}
+
+/* Canvas Card */
+.canvas-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.canvas-card h3 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.canvas-card small {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+#canvas3d {
+    width: 100%;
+    height: 500px;
+    border: 1px solid #e0e7ff;
+    border-radius: 5px;
+    background-color: #0a0a16;
+    flex-grow: 1;
+    min-height: 500px;
+}
+
 /* Workflow */
 .workflow {
     display: flex;
@@ -388,6 +489,17 @@ body {
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .tool-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    #canvas3d {
+        min-height: 400px;
+        height: 400px;
+    }
+}
+
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2rem;
@@ -419,6 +531,15 @@ body {
     .solution-steps {
         grid-template-columns: 1fr;
     }
+
+    .tool-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    #canvas3d {
+        min-height: 350px;
+        height: 350px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -438,5 +559,18 @@ body {
 
     .section {
         padding: 2rem 0;
+    }
+
+    #canvas3d {
+        min-height: 300px;
+        height: 300px;
+    }
+
+    .form-card {
+        padding: 1.5rem;
+    }
+
+    .canvas-card {
+        padding: 1.5rem;
     }
 }
