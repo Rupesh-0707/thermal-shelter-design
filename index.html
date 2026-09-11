@@ -126,7 +126,7 @@
                     <p>Suggests thermal insulation materials for your climate</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">3D</div>
+                    <div class="feature-icon">🎯</div>
                     <h3>3D Visualization</h3>
                     <p>Interactive 360° 3D model with OrbitControls</p>
                 </div>
@@ -173,13 +173,15 @@
                         <div class="data-item"><span>Material:</span><b id="outMat">-</b></div>
                         <div class="data-item"><span>Wall Thickness:</span><b id="outThick">-</b></div>
                         <div class="data-item"><span>Estimated Budget:</span><b id="outBudget" style="color:#4ade80;">-</b></div>
+                        <div class="data-item"><span>Roof Type:</span><b id="outRoof">Pitched</b></div>
+                        <div class="data-item"><span>Insulation Rating:</span><b id="outInsulation">-</b></div>
                     </div>
                 </div>
 
                 <!-- 3D Viewer -->
                 <div class="canvas-card">
-                    <h3>3D Structural Visualization</h3>
-                    <small style="color:#94a3b8;">Use mouse to rotate, scroll to zoom • Temperature-responsive coloring</small>
+                    <h3>🎨 3D Structural Visualization</h3>
+                    <small style="color:#94a3b8;">Left click + drag to rotate • Right click + drag to pan • Scroll to zoom • Temperature-responsive colors</small>
                     <div id="canvas3d"></div>
                 </div>
             </div>
@@ -194,10 +196,10 @@
                 <div class="tech-item">
                     <h3>🔧 Technologies Used</h3>
                     <ul>
-                        <li>Three.js for 3D Visualization</li>
+                        <li>Three.js r128 for 3D Graphics</li>
+                        <li>OrbitControls for Interactive Navigation</li>
                         <li>OpenWeatherMap API for Real-time Weather</li>
-                        <li>AI Algorithm for Thermal Calculations</li>
-                        <li>Responsive Web Design</li>
+                        <li>WebGL Renderer with Antialiasing</li>
                     </ul>
                 </div>
                 <div class="tech-item">
@@ -205,8 +207,8 @@
                     <ul>
                         <li>Temperature-based Material Selection</li>
                         <li>Occupancy-based Dimensioning</li>
-                        <li>Orientation-aware Insulation</li>
-                        <li>Budget-friendly Cost Estimation</li>
+                        <li>Orientation-aware Insulation Calculation</li>
+                        <li>Dynamic Cost Estimation by Climate</li>
                     </ul>
                 </div>
             </div>
@@ -243,80 +245,237 @@
 
     <!-- Thermal Shelter AI Script -->
     <script>
-    let scene, camera, renderer, currentMesh, controls;
+    let scene, camera, renderer, currentGroup, controls;
+    let shelterWidth = 6, shelterDepth = 8, shelterHeight = 3;
 
     // Initialize 3D Scene
     function init3D() {
         const container = document.getElementById("canvas3d");
         if (!container) return;
 
+        // Scene Setup
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0a0a16);
+        scene.fog = new THREE.Fog(0x0a0a16, 100, 500);
 
-        camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-        camera.position.set(10, 10, 15);
+        // Camera Setup
+        camera = new THREE.PerspectiveCamera(
+            60, 
+            container.clientWidth / container.clientHeight, 
+            0.1, 
+            1000
+        );
+        camera.position.set(15, 12, 20);
 
-        renderer = new THREE.WebGLRenderer({ antialias: true });
+        // Renderer Setup
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFShadowShadowMap;
         container.appendChild(renderer.domElement);
 
+        // Controls Setup
         controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 2;
+        controls.enablePan = true;
+        controls.enableZoom = true;
         
         // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
         scene.add(ambientLight);
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        dirLight.position.set(10, 20, 10);
-        scene.add(dirLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+        directionalLight.position.set(20, 25, 15);
+        directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.width = 2048;
+        directionalLight.shadow.mapSize.height = 2048;
+        directionalLight.shadow.camera.left = -50;
+        directionalLight.shadow.camera.right = 50;
+        directionalLight.shadow.camera.top = 50;
+        directionalLight.shadow.camera.bottom = -50;
+        scene.add(directionalLight);
+
+        // Ground
+        const groundGeo = new THREE.PlaneGeometry(60, 60);
+        const groundMat = new THREE.MeshStandardMaterial({ 
+            color: 0x2d5016, 
+            roughness: 0.8,
+            metalness: 0.1 
+        });
+        const ground = new THREE.Mesh(groundGeo, groundMat);
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        scene.add(ground);
 
         // Grid
-        const gridHelper = new THREE.GridHelper(30, 30, 0x2563eb, 0x334155);
+        const gridHelper = new THREE.GridHelper(60, 30, 0x2563eb, 0x334155);
+        gridHelper.position.y = 0.01;
         scene.add(gridHelper);
+
+        // Initialize with default shelter
+        createShelter(6, 8, 3, 25);
+
+        // Handle window resize
+        window.addEventListener('resize', onWindowResize);
 
         animate();
     }
 
+    function onWindowResize() {
+        const container = document.getElementById("canvas3d");
+        if (!container) return;
+
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+    }
+
     function animate() {
         requestAnimationFrame(animate);
-        if(controls) controls.update();
+        controls.update();
         renderer.render(scene, camera);
     }
 
-    // Render 3D Shelter
-    function render3DShelter(length, width, height, temp) {
-        if (currentMesh) scene.remove(currentMesh);
+    // Create Complete 3D Shelter
+    function createShelter(length, width, height, temp) {
+        // Remove existing shelter
+        if (currentGroup) {
+            scene.remove(currentGroup);
+            currentGroup = null;
+        }
 
-        const group = new THREE.Group();
+        currentGroup = new THREE.Group();
 
-        // Temperature-based color
-        let wallColor = 0x94a3b8; // Default gray
-        if (temp >= 35) wallColor = 0xf97316; // Orange for hot climates
-        else if (temp <= 10) wallColor = 0x38bdf8; // Blue for cold climates
+        // Temperature-based color scheme
+        let wallColor = 0x94a3b8;
+        let roofColor = 0xef4444;
 
-        // Main Walls
+        if (temp >= 35) {
+            wallColor = 0xf4a460; // Sandy/reflective orange
+            roofColor = 0xffd700; // Golden yellow
+        } else if (temp <= 10) {
+            wallColor = 0x87ceeb; // Light blue for insulation
+            roofColor = 0x4169e1; // Royal blue
+        } else {
+            wallColor = 0xcd853f; // Peru/brown for moderate
+            roofColor = 0xa0522d; // Sienna
+        }
+
+        // Main Wall Structure
         const wallGeo = new THREE.BoxGeometry(length, height, width);
-        const wallMat = new THREE.MeshStandardMaterial({ color: wallColor, wireframe: false });
-        const shelter = new THREE.Mesh(wallGeo, wallMat);
-        shelter.position.y = height / 2;
-        group.add(shelter);
+        const wallMat = new THREE.MeshStandardMaterial({ 
+            color: wallColor, 
+            roughness: 0.7,
+            metalness: 0.2
+        });
+        const mainWall = new THREE.Mesh(wallGeo, wallMat);
+        mainWall.position.y = height / 2;
+        mainWall.castShadow = true;
+        mainWall.receiveShadow = true;
+        currentGroup.add(mainWall);
 
-        // Roof (Pyramid)
-        const roofGeo = new THREE.ConeGeometry(Math.max(length, width) * 0.75, 1.5, 4);
-        const roofMat = new THREE.MeshStandardMaterial({ color: 0xef4444 });
+        // Roof - Pitched Triangle Roof
+        const roofShape = new THREE.Shape();
+        roofShape.moveTo(-length / 2, 0);
+        roofShape.lineTo(0, height * 0.6);
+        roofShape.lineTo(length / 2, 0);
+        roofShape.lineTo(-length / 2, 0);
+
+        const roofExtrudeSettings = {
+            depth: width,
+            bevelEnabled: false
+        };
+
+        const roofGeo = new THREE.ExtrudeGeometry(roofShape, roofExtrudeSettings);
+        const roofMat = new THREE.MeshStandardMaterial({ 
+            color: roofColor,
+            roughness: 0.6,
+            metalness: 0.3
+        });
         const roof = new THREE.Mesh(roofGeo, roofMat);
-        roof.position.y = height + 0.75;
-        roof.rotation.y = Math.PI / 4;
-        group.add(roof);
+        roof.position.y = height;
+        roof.position.z = -width / 2;
+        roof.rotation.z = Math.PI / 2;
+        roof.castShadow = true;
+        roof.receiveShadow = true;
+        currentGroup.add(roof);
 
         // Door
-        const doorGeo = new THREE.BoxGeometry(0.8, 1.8, 0.1);
-        const doorMat = new THREE.MeshStandardMaterial({ color: 0x1e293b });
+        const doorGeo = new THREE.BoxGeometry(0.9, 2.0, 0.12);
+        const doorMat = new THREE.MeshStandardMaterial({ 
+            color: 0x1e293b,
+            roughness: 0.5,
+            metalness: 0.8
+        });
         const door = new THREE.Mesh(doorGeo, doorMat);
-        door.position.set(0, 0.9, (width / 2) + 0.05);
-        group.add(door);
+        door.position.set(0, 1.0, width / 2 + 0.06);
+        door.castShadow = true;
+        door.receiveShadow = true;
+        currentGroup.add(door);
 
-        currentMesh = group;
-        scene.add(currentMesh);
+        // Door Handle
+        const handleGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.02);
+        const handleMat = new THREE.MeshStandardMaterial({ 
+            color: 0xffd700,
+            metalness: 1.0,
+            roughness: 0.2
+        });
+        const handle = new THREE.Mesh(handleGeo, handleMat);
+        handle.position.set(0.3, 1.0, width / 2 + 0.12);
+        handle.rotation.z = Math.PI / 2;
+        handle.castShadow = true;
+        currentGroup.add(handle);
+
+        // Windows (2 sides)
+        const windowGeo = new THREE.BoxGeometry(0.8, 0.6, 0.08);
+        const windowMat = new THREE.MeshStandardMaterial({ 
+            color: 0x87ceeb,
+            metalness: 0.9,
+            roughness: 0.1
+        });
+
+        const window1 = new THREE.Mesh(windowGeo, windowMat);
+        window1.position.set(-2, 1.5, width / 2 + 0.06);
+        window1.castShadow = true;
+        currentGroup.add(window1);
+
+        const window2 = new THREE.Mesh(windowGeo, windowMat);
+        window2.position.set(2, 1.5, width / 2 + 0.06);
+        window2.castShadow = true;
+        currentGroup.add(window2);
+
+        // Ventilation Grate on Roof
+        const ventGeo = new THREE.BoxGeometry(0.4, 0.3, 0.1);
+        const ventMat = new THREE.MeshStandardMaterial({ 
+            color: 0x696969,
+            metalness: 0.7,
+            roughness: 0.4
+        });
+        const vent = new THREE.Mesh(ventGeo, ventMat);
+        vent.position.set(0, height + 1.5, 0);
+        vent.castShadow = true;
+        currentGroup.add(vent);
+
+        // Perimeter Foundation
+        const foundationGeo = new THREE.BoxGeometry(length + 0.5, 0.2, width + 0.5);
+        const foundationMat = new THREE.MeshStandardMaterial({ 
+            color: 0x8b7355,
+            roughness: 0.8
+        });
+        const foundation = new THREE.Mesh(foundationGeo, foundationMat);
+        foundation.position.y = -0.1;
+        foundation.castShadow = true;
+        foundation.receiveShadow = true;
+        currentGroup.add(foundation);
+
+        scene.add(currentGroup);
     }
 
     // Main Processing Function
@@ -329,6 +488,11 @@
             alert("Please enter a valid location and number of people!");
             return;
         }
+
+        // Disable button during processing
+        const btn = event.target;
+        btn.disabled = true;
+        btn.textContent = "Generating...";
 
         // Weather API
         const apiKey = "895284fb2d2c50a520d3e2dbec697ad5";
@@ -353,36 +517,44 @@
         const area = people * 4.0;
         const length = parseFloat(Math.sqrt(area * 1.5).toFixed(2));
         const width = parseFloat((area / length).toFixed(2));
-        const height = 3;
+        const height = Math.max(2.8, 2.5 + people * 0.15);
 
-        // Select Material Based on Temperature
-        let material = "", wallThick = "", costPerSqm = 0;
+        // Material & Specs
+        let material = "", wallThick = "", costPerSqm = 0, insulation = "";
         if (temp >= 35) {
-            material = "🌡️ Reflective Canvas + PUF Insulation Panels";
+            material = "🌡️ Reflective Canvas + PUF Insulation";
             wallThick = "200 mm";
             costPerSqm = 3500;
+            insulation = "High Reflectivity (R-15)";
         } else if (temp <= 10) {
-            material = "❄️ Insulated Prefab Composite + Stone";
+            material = "❄️ Insulated Composite + Stone";
             wallThick = "300 mm";
             costPerSqm = 5000;
+            insulation = "Extra Heavy (R-25)";
         } else {
-            material = "🏗️ Standard Brick + Waterproof Tarpaulin";
+            material = "🏗️ Standard Brick + Tarpaulin";
             wallThick = "150 mm";
             costPerSqm = 2500;
+            insulation = "Standard (R-12)";
         }
 
         const estimatedBudget = area * costPerSqm;
 
         // Display Results
         document.getElementById("outArea").innerText = `${area} sq.m`;
-        document.getElementById("outDim").innerText = `${length}m × ${width}m (Height: ${height}m)`;
+        document.getElementById("outDim").innerText = `${length}m × ${width}m (H: ${height.toFixed(2)}m)`;
         document.getElementById("outMat").innerText = material;
         document.getElementById("outThick").innerText = wallThick;
+        document.getElementById("outInsulation").innerText = insulation;
         document.getElementById("outBudget").innerText = `₹${estimatedBudget.toLocaleString('en-IN')}`;
         document.getElementById("output").style.display = "block";
 
         // Render 3D Model
-        render3DShelter(length, width, height, temp);
+        createShelter(length, width, height, temp);
+
+        // Reset button
+        btn.disabled = false;
+        btn.textContent = "Generate Specs & 3D Model";
     }
 
     // Initialize on page load
